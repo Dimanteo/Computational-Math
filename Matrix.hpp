@@ -2,6 +2,7 @@
 
 #include <cassert>
 #include <cstddef>
+#include <ostream>
 
 // COmputational MAth
 namespace coma {
@@ -20,6 +21,8 @@ class Matrix {
     size_t getCols() const;
     numb_t *operator[](size_t i);
 };
+
+std::ostream &operator<<(std::ostream &stream, Matrix &matrix);
 
 }; // namespace coma
 

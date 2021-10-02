@@ -19,4 +19,14 @@ numb_t *Matrix::operator[](size_t i) {
     return m_data + m_cols * i;
 };
 
+std::ostream &operator<<(std::ostream &stream, Matrix &matrix) {
+    for (size_t r = 0; r < matrix.getRows(); r++) {
+        for (size_t c = 0; c < matrix.getCols(); c++) {
+            stream << matrix[r][c] << " ";
+        }
+        stream << '\n';
+    }
+    return stream;
+}
+
 }; // namespace coma
