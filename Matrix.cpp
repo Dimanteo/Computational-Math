@@ -4,24 +4,19 @@
 
 namespace coma {
 
-Matrix::Matrix(size_t ncols, size_t nrows) : m_rows(nrows), m_cols(ncols) {
-    m_data = (numb_t *)calloc(ncols * nrows, sizeof(m_data[0]));
-};
+Matrix::Matrix(size_t width, size_t height) { m_data = new DataTable<numb_t>(width, height); }
 
-Matrix::~Matrix() { free(m_data); }
+Matrix::~Matrix() { delete (m_data); }
 
-size_t Matrix::getCols() const { return m_cols; }
+size_t Matrix::getHeight() const { return m_data->getHeight(); }
 
-size_t Matrix::getRows() const { return m_rows; }
+size_t Matrix::getWidth() const { return m_data->getWidth(); }
 
-numb_t *Matrix::operator[](size_t i) {
-    assert(i < m_rows);
-    return m_data + m_cols * i;
-};
+DTRowRef<numb_t> Matrix::operator[](size_t i) { return (*m_data)[i]; }
 
 std::ostream &operator<<(std::ostream &stream, Matrix &matrix) {
-    for (size_t r = 0; r < matrix.getRows(); r++) {
-        for (size_t c = 0; c < matrix.getCols(); c++) {
+    for (size_t r = 0; r < matrix.getHeight(); r++) {
+        for (size_t c = 0; c < matrix.getWidth(); c++) {
             stream << matrix[r][c] << " ";
         }
         stream << '\n';
@@ -29,4 +24,8 @@ std::ostream &operator<<(std::ostream &stream, Matrix &matrix) {
     return stream;
 }
 
-}; // namespace coma
+void Matrix::swapRows(size_t li, size_t ri) { m_data->swapRows(li, ri); }
+
+void Matrix::swapCols(size_t li, size_t ri) { m_data->swapCols(li, ri); }
+
+} // namespace coma

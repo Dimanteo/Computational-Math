@@ -1,4 +1,6 @@
-#ifndef MATRIX_HPP
+#pragma once
+
+#include "DataTable.hpp"
 
 #include <cassert>
 #include <cstddef>
@@ -10,20 +12,19 @@ namespace coma {
 using numb_t = double;
 
 class Matrix {
-    size_t m_rows;
-    size_t m_cols;
-    numb_t *m_data;
+
+    DataTable<numb_t> *m_data;
 
   public:
     Matrix(size_t ncols, size_t nrows);
     ~Matrix();
-    size_t getRows() const;
-    size_t getCols() const;
-    numb_t *operator[](size_t i);
+    size_t getHeight() const;
+    size_t getWidth() const;
+    void swapRows(size_t li, size_t ri);
+    void swapCols(size_t li, size_t ri);
+    DTRowRef<numb_t> operator[](size_t i);
 };
 
 std::ostream &operator<<(std::ostream &stream, Matrix &matrix);
 
-}; // namespace coma
-
-#endif // MATRIX_HPP
+} // namespace coma
