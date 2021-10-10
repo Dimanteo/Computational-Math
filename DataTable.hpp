@@ -87,7 +87,7 @@ template <typename T> class DTColRef {
         pointer operator->() { return it_ptr; }
         // Prefix increment
         ColIterator &operator++() {
-            it_ptr += m_step;
+            it_ptr += it_step;
             return *this;
         }
         // Postfix increment
