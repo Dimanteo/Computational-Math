@@ -18,4 +18,15 @@ class Matrix : public DataTable<numb_t> {
 
 std::ostream &operator<<(std::ostream &stream, Matrix &matrix);
 
+class Vector {
+    size_t m_size;
+    Matrix m_vector;
+
+  public:
+    Vector(size_t size);
+    size_t getSize() const;
+    numb_t &operator[](size_t i);
+    friend std::ostream &operator<<(std::ostream &stream, Vector &matrix);
+};
+
 } // namespace coma

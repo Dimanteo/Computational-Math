@@ -140,6 +140,8 @@ template <typename Data_T> class DataTable {
     // non-copyable
     DataTable(const DataTable &) = delete;
     DataTable &operator=(const DataTable &) = delete;
+    DataTable(DataTable &&) = default;
+    DataTable &operator=(DataTable &&) = default;
 
     DTRowRef<Data_T> operator[](size_t row_index);
     void swapRows(size_t l, size_t r);

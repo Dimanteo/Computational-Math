@@ -11,4 +11,4 @@ set(CMAKE_CXX_FLAGS "-Wall -Wextra -Wcast-align -Wcast-qual -Wchar-subscripts -W
 set(CMAKE_CXX_FLAGS_DEBUG "-g")
 set(CMAKE_CXX_FLAGS_RELEASE "-O2 -DNDEBUG")
 
-add_library(coma SHARED Matrix.cpp LinearSystem.cpp)
+add_library(coma SHARED Matrix LinearSystem Solvers DataTable)
