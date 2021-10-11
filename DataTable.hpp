@@ -137,13 +137,12 @@ template <typename Data_T> class DataTable {
     DataTable(size_t ncols, size_t nrows);
     ~DataTable();
     DataTable() = delete;
-    // non-copyable
-    DataTable(const DataTable &) = delete;
+    DataTable(const DataTable &);
     DataTable &operator=(const DataTable &) = delete;
     DataTable(DataTable &&) = default;
     DataTable &operator=(DataTable &&) = default;
 
-    DTRowRef<Data_T> operator[](size_t row_index);
+    DTRowRef<Data_T> operator[](size_t row_index) const;
     void swapRows(size_t l, size_t r);
     void swapCols(size_t l, size_t r);
 
@@ -159,9 +158,18 @@ DataTable<T>::DataTable(size_t width, size_t height) : m_width(width), m_height(
     m_data = new T[width * height]();
 }
 
+template <typename T>
+DataTable<T>::DataTable(const DataTable &that) : DataTable(that.getWidth(), that.getHeight()) {
+    for (size_t row = 0; row < that.getHeight(); row++) {
+        for (size_t col = 0; col < that.getWidth(); col++) {
+            (*this)[row][col] = that[row][col];
+        }
+    }
+}
+
 template <typename T> DataTable<T>::~DataTable() { delete[](m_data); }
 
-template <typename T> DTRowRef<T> DataTable<T>::operator[](size_t row_i) {
+template <typename T> DTRowRef<T> DataTable<T>::operator[](size_t row_i) const {
     assert(row_i < m_height && "index out of range");
     return DTRowRef<T>(m_data + row_i * m_width, m_width);
 }
