@@ -28,7 +28,7 @@ void GaussSolver::chooseMaxCoeff(size_t iter) {
             max_index = i;
         }
     }
-    naiveSwap(matrix.col(iter), matrix.col(max_index));
+    LS->swapCols(iter, max_index);
 }
 
 void GaussSolver::nullifyCol(size_t iter) {
@@ -52,6 +52,54 @@ void GaussSolver::backwardPath(Vector &root) {
             root(row) -= LS->matrix(row, col) * root(col);
         }
     }
+}
+
+Vector IterativeSolver::solve(numb_t precision) {
+    calcCoeffs();
+    size_t it_number = estimateIterations(precision);
+    return iterate(it_number);
+}
+
+void SeidelSolver::calcCoeffs() {
+    Matrix A = LS->matrix();
+    Matrix L = Matrix::Zero(A.rows(), A.cols()); // lower
+    Matrix D = Matrix::Zero(A.rows(), A.cols()); // diag
+    Matrix U = Matrix::Zero(A.rows(), A.cols()); // upper
+    decompose(L, D, U);
+    // X_k+1 = B*X_k + F
+    Matrix tmp = (L + D).adjoint();
+    B = -tmp * U;
+    F = tmp * LS->consts();
+}
+
+void SeidelSolver::decompose(Matrix &L, Matrix &D, Matrix &U) {
+    Matrix A = LS->matrix();
+    for (long int row = 0; row < A.rows(); row++) {
+        for (long int col = 0; col < A.cols(); col++) {
+            if (col < row) {
+                L(row, col) = A(row, col);
+            } else if (col > row) {
+                U(row, col) = A(row, col);
+            } else { // diag
+                D(row, col) = A(row, col);
+            }
+        }
+    }
+}
+
+size_t SeidelSolver::estimateIterations(numb_t precision) {
+    auto q = B.norm();
+    assert(q < 1);
+    size_t k = static_cast<size_t>(std::ceil(log(precision * (1 - q) / F.norm()) / log(q))) + 1;
+    return k;
+}
+
+Vector SeidelSolver::iterate(size_t it_number) {
+    Vector solution = Vector::Zero(LS->getSize());
+    for (;it_number != 0; it_number--) {
+        solution = B * solution + F;
+    }
+    return solution;
 }
 
 }; // namespace coma

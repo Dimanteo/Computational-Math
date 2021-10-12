@@ -10,6 +10,7 @@ class LinearSystem {
 
   public:
     LinearSystem(size_t size);
+    LinearSystem(const LinearSystem &that);
     ~LinearSystem() = default;
     size_t getSize() const;
     Matrix matrix();
@@ -18,6 +19,8 @@ class LinearSystem {
     Vector consts();
     Vector consts() const;
     numb_t &consts(size_t row);
+    void swapCols(size_t li, size_t ri);
+    void swapRows(size_t li, size_t ri);
     void add(size_t li, size_t ri);
     void sub(size_t li, size_t ri);
     void mul(size_t row, numb_t factor);
