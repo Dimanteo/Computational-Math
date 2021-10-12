@@ -2,47 +2,26 @@
 
 namespace coma {
 
-LinearSystem::LinearSystem(size_t size) : m_size(size), m_matrix(size, size), m_consts(size) {}
-size_t LinearSystem::getSize() { return m_size; }
-Matrix &LinearSystem::matrix() { return m_matrix; }
-numb_t &LinearSystem::consts(size_t i) { return m_consts[i]; }
+LinearSystem::LinearSystem(size_t size) : m_size(size), m_matrix(Matrix::Zero(size, size + 1)) {}
+size_t LinearSystem::getSize() const { return m_size; }
+Matrix LinearSystem::matrix() { return m_matrix.leftCols(m_size); }
+Vector LinearSystem::consts() { return m_matrix.rightCols(1); }
+Matrix LinearSystem::matrix() const { return m_matrix.leftCols(m_size); }
+Vector LinearSystem::consts() const { return m_matrix.rightCols(1); }
+numb_t &LinearSystem::matrix(size_t row, size_t col) { return m_matrix.leftCols(m_size)(row, col); }
+numb_t &LinearSystem::consts(size_t row) { return m_matrix.rightCols(1)(row); }
 
-std::ostream &operator<<(std::ostream &stream, LinearSystem &LS) {
-    for (size_t row = 0; row < LS.getSize(); row++) {
-        for (auto num : LS.matrix().getRow(row)) {
-            stream << num << " ";
-        }
-        stream << " = " << LS.consts(row) << "\n";
-    }
+std::ostream &operator<<(std::ostream &stream, const LinearSystem &LS) {
+    stream << LS.matrix();
     return stream;
 }
 
-void LinearSystem::add(size_t li, size_t ri) {
-    for (size_t col = 0; col < m_size; col++) {
-        m_matrix[li][col] += m_matrix[ri][col];
-    }
-    m_consts[li] += m_consts[ri];
-}
+void LinearSystem::add(size_t li, size_t ri) { m_matrix.row(li) += m_matrix.row(ri); }
 
-void LinearSystem::sub(size_t li, size_t ri) {
-    for (size_t col = 0; col < m_size; col++) {
-        m_matrix[li][col] -= m_matrix[ri][col];
-    }
-    m_consts[li] -= m_consts[ri];
-}
+void LinearSystem::sub(size_t li, size_t ri) { m_matrix.row(li) -= m_matrix.row(ri); }
 
-void LinearSystem::mul(size_t row, numb_t factor) {
-    for (size_t col = 0; col < m_size; col++) {
-        m_matrix[row][col] *= factor;
-    }
-    m_consts[row] *= factor;
-}
+void LinearSystem::mul(size_t row, numb_t factor) { m_matrix.row(row) *= factor; }
 
-void LinearSystem::div(size_t row, numb_t denom) {
-    for (size_t col = 0; col < m_size; col++) {
-        m_matrix[row][col] /= denom;
-    }
-    m_consts[row] /= denom;
-}
+void LinearSystem::div(size_t row, numb_t denom) { m_matrix.row(row) /= denom; }
 
 }; // namespace coma

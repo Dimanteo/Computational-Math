@@ -1,17 +1,18 @@
 #pragma once
 
+#include "CoMa.hpp"
 #include <cstddef>
 
 namespace coma {
 
 class LinearSystem;
-class Vector;
 
 class Solver {
   public:
     LinearSystem *LS;
     Solver(LinearSystem *LS) : LS(LS) {}
-    virtual Vector solve() = 0;
+    virtual Vector solve()=0;
+    virtual ~Solver() = default;
 };
 
 class GaussSolver : private Solver {
