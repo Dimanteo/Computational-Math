@@ -25,8 +25,8 @@ class LinearSystem {
     void sub(size_t li, size_t ri);
     void mul(size_t row, numb_t factor);
     void div(size_t row, numb_t denom);
+    friend std::ostream &operator<<(std::ostream &stream, const LinearSystem &LS);
 };
 
-std::ostream &operator<<(std::ostream &stream, const LinearSystem &LS);
 
 } // namespace coma

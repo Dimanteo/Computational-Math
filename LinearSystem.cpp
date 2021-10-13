@@ -20,7 +20,7 @@ LinearSystem::LinearSystem(const LinearSystem &that) : LinearSystem(that.getSize
 }
 
 std::ostream &operator<<(std::ostream &stream, const LinearSystem &LS) {
-    stream << LS.matrix();
+    stream << LS.m_matrix;
     return stream;
 }
 

@@ -34,21 +34,22 @@ void GaussSolver::chooseMaxCoeff(size_t iter) {
 void GaussSolver::nullifyCol(size_t iter) {
     Matrix matrix = LS->matrix();
     LS->div(iter, matrix(iter, iter));
-    numb_t prevFact = 1;
+    double prevFactor = 1;
     // floating point division is slower than multiplication
     for (size_t row = iter + 1; row < LS->getSize(); row++) {
-        if (matrix(row, iter) == 0)
+        if (std::fabs(matrix(row, iter)) < 1e-10)
             continue;
-        LS->mul(iter, matrix(row, iter) / prevFact);
-        prevFact = matrix(row, iter);
+        LS->mul(iter, matrix(row, iter) / prevFactor);
+        prevFactor = matrix(row, iter);
         LS->sub(row, iter);
     }
+    LS->div(iter, prevFactor);
 }
 
 void GaussSolver::backwardPath(Vector &root) {
-    for (size_t row = LS->getSize() - 1; row + 1 != 0; row--) {
+    for (long int row = LS->matrix().rows() - 1; row >= 0; row--) {
         root(row) = LS->consts(row);
-        for (size_t col = row + 1; col < LS->getSize(); col++) {
+        for (long int col = row + 1; col < static_cast<long int>(LS->getSize()); col++) {
             root(row) -= LS->matrix(row, col) * root(col);
         }
     }
@@ -67,7 +68,7 @@ void SeidelSolver::calcCoeffs() {
     Matrix U = Matrix::Zero(A.rows(), A.cols()); // upper
     decompose(L, D, U);
     // X_k+1 = B*X_k + F
-    Matrix tmp = (L + D).adjoint();
+    Matrix tmp = (L + D).inverse();
     B = -tmp * U;
     F = tmp * LS->consts();
 }
