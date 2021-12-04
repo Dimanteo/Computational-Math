@@ -5,6 +5,7 @@
 #include <cassert>
 #include <cstddef>
 #include <ostream>
+#include <initializer_list>
 
 // COmputational MAth
 namespace coma {
@@ -26,9 +27,11 @@ class Vector {
 
   public:
     Vector(size_t size);
+    Vector(std::initializer_list<numb_t> list);
     Vector(const Vector &that) : m_size(that.getSize()), m_vector(that.m_vector) {};
     size_t getSize() const;
     numb_t &operator[](size_t i);
+    numb_t &operator[](size_t i) const;
     friend std::ostream &operator<<(std::ostream &stream, Vector &matrix);
     friend Vector operator+(Vector &lhs, Vector &rhs);
     Vector &operator+=(Vector that);

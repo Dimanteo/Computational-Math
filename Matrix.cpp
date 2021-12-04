@@ -16,9 +16,22 @@ std::ostream &operator<<(std::ostream &stream, Matrix &matrix) {
 
 Vector::Vector(size_t size) : m_size(size), m_vector(size, 1) {}
 
+Vector::Vector(std::initializer_list<numb_t> list) : Vector(list.size()) {
+    auto list_it = list.begin();
+    for (size_t i = 0; i < list.size(); ++i) {
+        m_vector[0][i] = *list_it;
+        ++list_it;
+    }
+}
+
 size_t Vector::getSize() const { return m_size; }
 
 numb_t &Vector::operator[](size_t i) {
+    assert(i < m_size);
+    return m_vector[0][i];
+}
+
+numb_t &Vector::operator[](size_t i) const {
     assert(i < m_size);
     return m_vector[0][i];
 }
