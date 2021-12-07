@@ -13,12 +13,12 @@ class BaseLinearSolver {
   public:
     LinearSystem *LS;
     BaseLinearSolver(LinearSystem *LS) : LS(LS) {}
-    virtual Vector solve()=0;
+    virtual Vector solve() = 0;
 };
 
 class BaseIterativeSolver {
   public:
-    virtual Vector solve(const Vector &base, numb_t precision)=0;
+    virtual Vector solve(const Vector &base, numb_t precision) = 0;
 };
 
 class DirectSolver : public BaseLinearSolver {
@@ -72,9 +72,10 @@ class NewtonSolver : BaseIterativeSolver {
     /// X_(n+1) = X_n + J^{-1}(x_n) * F(x_n)
     std::unique_ptr<FunctionMatrix> J;
     std::unique_ptr<FunctionMatrix> F;
+
   public:
     NewtonSolver(size_t dimension);
-    virtual ~NewtonSolver()=default;
+    virtual ~NewtonSolver() = default;
     Vector solve(const Vector &base, numb_t precision) override;
     FunctionMatrix *jacobian() { return J.get(); }
     FunctionMatrix *function() { return F.get(); }

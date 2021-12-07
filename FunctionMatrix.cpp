@@ -15,12 +15,8 @@ Matrix FunctionMatrix::at(ArgTy point) {
     return matrix;
 }
 
-size_t FunctionMatrix::height() const {
-    return funcTable.size();
-}
+size_t FunctionMatrix::height() const { return funcTable.size(); }
 
-size_t FunctionMatrix::width() const {
-    return funcTable[0].size();
-}
+size_t FunctionMatrix::width() const { return funcTable[0].size(); }
 
 } // namespace coma

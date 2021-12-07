@@ -100,7 +100,7 @@ Vector SeidelSolver::iterate(size_t it_number) {
     for (; it_number != 0; it_number--) {
         solution = B * solution + F;
     }
-    return solution;        
+    return solution;
 }
 
 NewtonSolver::NewtonSolver(size_t dimension)
