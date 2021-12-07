@@ -6,8 +6,6 @@
 namespace coma {
 
 class FunctionMatrix {
-    Matrix m_matrix;
-
   public:
     using ArgTy = const Vector &;
     using FuncTy = std::function<numb_t(ArgTy)>;
@@ -19,11 +17,9 @@ class FunctionMatrix {
   public:
     FunctionMatrix(size_t width, size_t height);
     FuncTy &func(size_t row, size_t col) { return funcTable[row][col]; }
-    void calculate(ArgTy point);
-    friend std::ostream &operator<<(std::ostream &stream, const FunctionMatrix &FM) {
-        stream << FM.m_matrix;
-        return stream;
-    }
+    Matrix at(ArgTy point);
+    size_t height() const;
+    size_t width() const;
 };
 
 } // namespace coma

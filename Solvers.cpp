@@ -55,7 +55,7 @@ void GaussSolver::backwardPath(Vector &root) {
     }
 }
 
-Vector IterativeSolver::solve(numb_t precision) {
+Vector SimpleIterationSolver::solve(numb_t precision) {
     calcCoeffs();
     size_t it_number = estimateIterations(precision);
     return iterate(it_number);
@@ -97,10 +97,24 @@ size_t SeidelSolver::estimateIterations(numb_t precision) {
 
 Vector SeidelSolver::iterate(size_t it_number) {
     Vector solution = Vector::Zero(LS->getSize());
-    for (;it_number != 0; it_number--) {
+    for (; it_number != 0; it_number--) {
         solution = B * solution + F;
     }
-    return solution;
+    return solution;        
+}
+
+NewtonSolver::NewtonSolver(size_t dimension)
+    : J(new FunctionMatrix(dimension, dimension)), F(new FunctionMatrix(1, dimension)) {}
+
+/// X_(n+1) = X_n + J^{-1}(x_n) * F(x_n)
+Vector NewtonSolver::solve(const Vector &base, numb_t precision) {
+    Vector X = base;
+    auto FatX = F.get()->at(X);
+    while (FatX.norm() > precision) {
+        X -= J.get()->at(X).inverse() * FatX;
+        FatX = F.get()->at(X);
+    }
+    return X;
 }
 
 }; // namespace coma
