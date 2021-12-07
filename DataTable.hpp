@@ -124,6 +124,10 @@ template <typename T> class DTColRef {
         assert(i < m_height);
         return *(m_colptr + i * m_step);
     }
+    T &operator[](size_t i) const {
+        assert(i < m_height);
+        return *(m_colptr + i * m_step);
+    }
     ColIterator begin() { return ColIterator(m_colptr, m_step); }
     ColIterator end() { return ColIterator(m_colptr + m_height * m_step, m_step); }
 };
