@@ -14,7 +14,12 @@ struct Point {
     Point(std::initializer_list<numb_t> list) : x(*list.begin()), y(*(list.begin() + 1)) {}
 };
 
-bool operator<(const Point &lhs, const Point &rhs) { return lhs.x < rhs.x; }
+bool operator<(const Point &lhs, const Point &rhs) { 
+    if (lhs.x == rhs.x) {
+        return lhs.y < rhs.y;
+    }
+    return lhs.x < rhs.x; 
+}
 
 /// Represents a table-defined function
 class TableFunction {

@@ -18,6 +18,7 @@ class FunctionMatrix {
     FunctionMatrix(size_t width, size_t height);
     FuncTy &func(size_t row, size_t col) { return funcTable[row][col]; }
     Matrix at(ArgTy point);
+    Vector vec_at(ArgTy point);
     size_t height() const;
     size_t width() const;
 };
