@@ -17,6 +17,7 @@ class ButcherTable {
     numb_t getB(size_t idx);
     numb_t getC(size_t idx);
     void resize(size_t order);
+    void setZero();
 };
 
 class RungeKuttSolver {

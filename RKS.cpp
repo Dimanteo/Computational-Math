@@ -11,6 +11,20 @@ void ButcherTable::resize(size_t order) {
     }
 }
 
+void ButcherTable::setZero() {
+    for (auto &el : Btable) {
+        el = 0;
+    }
+    for (auto &el : Ctable) {
+        el = 0;
+    }
+    for (auto &col : Atable) {
+        for (auto &el : col) {
+            el = 0;
+        }
+    }
+}
+
 numb_t ButcherTable::getA(size_t row, size_t col) {
     return Atable[row - 1][col - 1];
 }
@@ -59,7 +73,7 @@ Vector RungeKuttSolver::iterate(const Vector &y, numb_t step, size_t n) {
 }
 
 void RungeKuttSolver::calcStages(const Vector &y, numb_t step, numb_t t) {
-    for (size_t stage = 1; stage < order; stage++) {
+    for (size_t stage = 1; stage <= order; stage++) {
         numb_t arg = t + table->getC(stage) * step;
         Vector vars = y;
         for (size_t s = 1; s <= stage - 1; s++) {
@@ -77,25 +91,42 @@ void RungeKuttSolver::calcStages(const Vector &y, numb_t step, numb_t t) {
 void RungeKuttSolver::setOrder(size_t order_) {
     order = order_;
     table->resize(order);
+    stageValues.resize(order + 1);
 }
 
 void RungeKuttSolver::setEulerMethod() {
     setOrder(2);
-    table->setC(1, 0);
+    table->setZero();
     table->setC(2, 1);
     table->setB(1, 0.5);
     table->setB(2, 0.5);
-    table->setA(1, 1, 0);
-    table->setA(1, 2, 0);
     table->setA(2, 1, 1);
-    table->setA(2, 2, 0);
 }
 
-void setHeunMethod() {
-
+void RungeKuttSolver::setHeunMethod() {
+    setOrder(3);
+    table->setZero();
+    table->setC(2, 1.0/3.0);
+    table->setC(3, 2.0/3.0);
+    table->setB(1, 0.25);
+    table->setB(3, 3.0/4.0);
+    table->setA(2, 1, 1.0/3.0);
+    table->setA(3, 2, 2.0/3.0);
 }
-void setForthOrder() {
 
+void RungeKuttSolver::setForthOrder() {
+    setOrder(4);
+    table->setZero();
+    table->setC(2, 0.5);
+    table->setC(3, 0.5);
+    table->setC(4, 1);
+    table->setB(1, 4.0/6.0);
+    table->setB(2, 2.0/6.0);
+    table->setB(3, 2.0/6.0);
+    table->setB(4, 1.0/6.0);
+    table->setA(2, 1, 0.5);
+    table->setA(3, 2, 0.5);
+    table->setA(4, 3, 1);
 }
 
 };
