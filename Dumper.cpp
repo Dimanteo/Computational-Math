@@ -10,7 +10,7 @@ void Dumper::serialize(const std::vector<Vector> &data, std::ostream &str, int p
             str << vec(row_i);
             cnt++;
             if (cnt != data.size()) {
-                str << ";";
+                str << ",";
             }
         }
         str << "\n";

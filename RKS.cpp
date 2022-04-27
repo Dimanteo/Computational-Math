@@ -45,7 +45,7 @@ void ButcherTable::setC(size_t idx, numb_t val) {
     Ctable[idx - 1] = val;
 }
 
-RungeKuttSolver::RungeKuttSolver(FunctionMatrix *fvec_) 
+RungeKuttSolver::RungeKuttSolver(FunctionMatrix *fvec_)
     : order(0), table(new ButcherTable()), fvec(fvec_) {}
 
 void RungeKuttSolver::setEquation(FunctionMatrix *func) {
@@ -67,7 +67,7 @@ Vector RungeKuttSolver::iterate(const Vector &y, numb_t step, size_t n) {
     Vector next_y = y;
     calcStages(y, step, step * static_cast<numb_t>(n));
     for (size_t stage = 1; stage < order; stage++) {
-    next_y += step * table->getB(stage) * getStageVal(stage);
+        next_y += step * table->getB(stage) * getStageVal(stage);
     }
     return next_y;
 }
@@ -114,7 +114,7 @@ void RungeKuttSolver::setHeunMethod() {
     table->setA(3, 2, 2.0/3.0);
 }
 
-void RungeKuttSolver::setForthOrder() {
+void RungeKuttSolver::setForthOrderMethod() {
     setOrder(4);
     table->setZero();
     table->setC(2, 0.5);

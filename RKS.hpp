@@ -30,9 +30,12 @@ class RungeKuttSolver {
     std::vector<Vector> solve(const Vector &init, numb_t step, size_t iterations);
     void setEquation(FunctionMatrix *func);
     // Butcher tables
-    void setEulerMethod(); // 2 order
-    void setHeunMethod();  // 3 order
-    void setForthOrder();  // 4 order
+    // 2 order
+    void setEulerMethod();
+    // 3 order
+    void setHeunMethod();
+    // 4 order
+    void setForthOrderMethod();
   private:
     void setOrder(size_t order);
     Vector iterate(const Vector &y, numb_t step, size_t n);
