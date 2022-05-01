@@ -53,20 +53,20 @@ void RungeKuttSolver::setEquation(FunctionMatrix *func) {
 }
 
 std::vector<Vector> RungeKuttSolver::solve(const Vector &init, numb_t step, size_t iterations) {
-      Vector y = init;
-      std::vector<Vector> solution;
-      solution.push_back(y);
-      for (size_t n = 0; n < iterations; n++) {
+    Vector y = init;
+    std::vector<Vector> solution;
+    solution.push_back(y);
+    for (size_t n = 0; n < iterations; n++) {
         y = iterate(y, step, n);
         solution.push_back(y);
-      }
-      return solution;
     }
+    return solution;
+}
 
 Vector RungeKuttSolver::iterate(const Vector &y, numb_t step, size_t n) {
     Vector next_y = y;
     calcStages(y, step, step * static_cast<numb_t>(n));
-    for (size_t stage = 1; stage < order; stage++) {
+    for (size_t stage = 1; stage <= order; stage++) {
         next_y += step * table->getB(stage) * getStageVal(stage);
     }
     return next_y;
@@ -94,7 +94,17 @@ void RungeKuttSolver::setOrder(size_t order_) {
     stageValues.resize(order + 1);
 }
 
-void RungeKuttSolver::setEulerMethod() {
+// Euler method
+void RungeKuttSolver::setFirstOrder() {
+    setOrder(1);
+    table->setZero();
+    table->setC(1, 0);
+    table->setB(1, 1);
+    table->setA(1, 1, 0);
+}
+
+// Modified Euler method
+void RungeKuttSolver::setSecondOrder() {
     setOrder(2);
     table->setZero();
     table->setC(2, 1);
@@ -103,7 +113,8 @@ void RungeKuttSolver::setEulerMethod() {
     table->setA(2, 1, 1);
 }
 
-void RungeKuttSolver::setHeunMethod() {
+// Heun's method
+void RungeKuttSolver::setThirdOrder() {
     setOrder(3);
     table->setZero();
     table->setC(2, 1.0/3.0);
@@ -114,7 +125,8 @@ void RungeKuttSolver::setHeunMethod() {
     table->setA(3, 2, 2.0/3.0);
 }
 
-void RungeKuttSolver::setForthOrderMethod() {
+// Classic Runge-Kutta
+void RungeKuttSolver::setForthOrder() {
     setOrder(4);
     table->setZero();
     table->setC(2, 0.5);

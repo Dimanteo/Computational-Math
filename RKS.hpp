@@ -1,4 +1,6 @@
-#include <CoMa.hpp>
+#pragma once
+#include "CoMa.hpp"
+#include "ODUSolver.hpp"
 #include "FunctionMatrix.hpp"
 #include <vector>
 #include <memory>
@@ -20,22 +22,21 @@ class ButcherTable {
     void setZero();
 };
 
-class RungeKuttSolver {
+class RungeKuttSolver : public ODUSolver {
     size_t order;
     std::unique_ptr<ButcherTable> table;
     FunctionMatrix *fvec;
     std::vector<Vector> stageValues;
   public:
     RungeKuttSolver(FunctionMatrix *fvec_);
-    std::vector<Vector> solve(const Vector &init, numb_t step, size_t iterations);
+    virtual std::vector<Vector>
+    solve(const Vector &init, numb_t step, size_t iterations) override;
     void setEquation(FunctionMatrix *func);
     // Butcher tables
-    // 2 order
-    void setEulerMethod();
-    // 3 order
-    void setHeunMethod();
-    // 4 order
-    void setForthOrderMethod();
+    void setFirstOrder();
+    void setSecondOrder();
+    void setThirdOrder();
+    void setForthOrder();
   private:
     void setOrder(size_t order);
     Vector iterate(const Vector &y, numb_t step, size_t n);

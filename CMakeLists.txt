@@ -12,5 +12,5 @@ set(CMAKE_CXX_FLAGS_DEBUG "-g")
 set(CMAKE_CXX_FLAGS_RELEASE "-O2 -DNDEBUG")
 include_directories("${CMAKE_CURRENT_LIST_DIR}")
 
-set(SRC_MODULES Matrix LinearSystem Solvers DataTable FunctionMatrix Integrator Dumper RKS)
+set(SRC_MODULES Matrix LinearSystem Solvers DataTable FunctionMatrix Integrator Dumper RKS Adams)
 add_library(coma SHARED ${SRC_MODULES})
