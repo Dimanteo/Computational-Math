@@ -37,6 +37,7 @@ class RungeKuttSolver : public ODUSolver {
     void setSecondOrder();
     void setThirdOrder();
     void setForthOrder();
+    void setImplicit();
   private:
     void setOrder(size_t order);
     Vector iterate(const Vector &y, numb_t step, size_t n);

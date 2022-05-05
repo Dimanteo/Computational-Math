@@ -141,4 +141,8 @@ void RungeKuttSolver::setForthOrder() {
     table->setA(4, 3, 1);
 }
 
+void RungeKuttSolver::setImplicit() {
+    setSecondOrder();
+}
+
 };
