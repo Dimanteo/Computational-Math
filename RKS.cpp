@@ -1,4 +1,5 @@
 #include "RKS.hpp"
+#include "Solvers.hpp"
 
 namespace coma {
 
@@ -45,14 +46,16 @@ void ButcherTable::setC(size_t idx, numb_t val) {
     Ctable[idx - 1] = val;
 }
 
-RungeKuttSolver::RungeKuttSolver(FunctionMatrix *fvec_)
+RungeKuttBase::RungeKuttBase(FunctionMatrix *fvec_)
     : order(0), table(new ButcherTable()), fvec(fvec_) {}
 
-void RungeKuttSolver::setEquation(FunctionMatrix *func) {
-    fvec = func;
+void RungeKuttBase::setOrder(size_t order_) {
+    order = order_;
+    table->resize(order);
+    stageValues.resize(order + 1);
 }
 
-std::vector<Vector> RungeKuttSolver::solve(const Vector &init, numb_t step, size_t iterations) {
+std::vector<Vector> RungeKuttBase::solve(const Vector &init, numb_t step, size_t iterations) {
     Vector y = init;
     std::vector<Vector> solution;
     solution.push_back(y);
@@ -63,7 +66,7 @@ std::vector<Vector> RungeKuttSolver::solve(const Vector &init, numb_t step, size
     return solution;
 }
 
-Vector RungeKuttSolver::iterate(const Vector &y, numb_t step, size_t n) {
+Vector RungeKuttBase::iterate(const Vector &y, numb_t step, size_t n) {
     Vector next_y = y;
     calcStages(y, step, step * static_cast<numb_t>(n));
     for (size_t stage = 1; stage <= order; stage++) {
@@ -71,6 +74,8 @@ Vector RungeKuttSolver::iterate(const Vector &y, numb_t step, size_t n) {
     }
     return next_y;
 }
+
+/// Explicit Runge-Kutta method
 
 void RungeKuttSolver::calcStages(const Vector &y, numb_t step, numb_t t) {
     for (size_t stage = 1; stage <= order; stage++) {
@@ -86,12 +91,6 @@ void RungeKuttSolver::calcStages(const Vector &y, numb_t step, numb_t t) {
         }
         stageValues[stage] = fvec->vec_at(joinedVec);
     }
-}
-
-void RungeKuttSolver::setOrder(size_t order_) {
-    order = order_;
-    table->resize(order);
-    stageValues.resize(order + 1);
 }
 
 // Euler method
@@ -139,6 +138,17 @@ void RungeKuttSolver::setForthOrder() {
     table->setA(2, 1, 0.5);
     table->setA(3, 2, 0.5);
     table->setA(4, 3, 1);
+}
+
+/// Implicit Runge-Kutta method
+
+RungeKuttImplicit::RungeKuttImplicit(FunctionMatrix *fvec_, FunctionMatrix *jacobi) :
+    RungeKuttBase(fvec_),
+    sysSolver(new NewtonSolver(fvec_, jacobi))
+    {}
+
+void RungeKuttImplicit::calcStages(const Vector &y, numb_t step, numb_t t) {
+
 }
 
 };

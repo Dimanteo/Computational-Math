@@ -39,4 +39,13 @@ size_t FunctionMatrix::height() const { return funcTable.size(); }
 
 size_t FunctionMatrix::width() const { return funcTable[0].size(); }
 
+void FunctionMatrix::decorate(DecoratorTy decor, FunctionMatrix &product) {
+    FunctionMatrix product(height(), width());
+    for (long int row = 0; row < product.height(); row++) {
+        for (long int col = 0; col < product.width(); col++) {
+            product.func(row, col) = decor(func(row, col));
+        }
+    }
+}
+
 } // namespace coma

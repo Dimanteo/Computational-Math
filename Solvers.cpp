@@ -106,6 +106,9 @@ Vector SeidelSolver::iterate(size_t it_number) {
 NewtonSolver::NewtonSolver(size_t dimension)
     : J(new FunctionMatrix(dimension, dimension)), F(new FunctionMatrix(1, dimension)) {}
 
+NewtonSolver::NewtonSolver(FunctionMatrix *f, FunctionMatrix *j)
+    : J(j), F(f) {}
+
 /// X_(n+1) = X_n + J^{-1}(x_n) * F(x_n)
 Vector NewtonSolver::solve(const Vector &base, numb_t precision) {
     Vector X = base;

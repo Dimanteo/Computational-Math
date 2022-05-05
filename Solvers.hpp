@@ -70,11 +70,12 @@ class SeidelSolver : public SimpleIterationSolver {
 
 class NewtonSolver : BaseIterativeSolver {
     /// X_(n+1) = X_n + J^{-1}(x_n) * F(x_n)
-    std::unique_ptr<FunctionMatrix> J;
-    std::unique_ptr<FunctionMatrix> F;
+    std::shared_ptr<FunctionMatrix> J;
+    std::shared_ptr<FunctionMatrix> F;
 
   public:
     NewtonSolver(size_t dimension);
+    NewtonSolver(FunctionMatrix *f, FunctionMatrix *j);
     virtual ~NewtonSolver() = default;
     Vector solve(const Vector &base, numb_t precision) override;
     FunctionMatrix *jacobian() { return J.get(); }
