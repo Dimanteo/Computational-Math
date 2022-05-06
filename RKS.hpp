@@ -29,8 +29,8 @@ class RungeKuttSolver : public ODUSolver {
     std::vector<Vector> stageValues;
   public:
     RungeKuttSolver(FunctionMatrix *fvec_);
-    virtual std::vector<Vector>
-    solve(const Vector &init, numb_t step, size_t iterations) override;
+    // virtual std::vector<Vector>
+    // solve(const Vector &init, numb_t step, size_t iterations, size_t maxpoints=0) override;
     void setEquation(FunctionMatrix *func);
     // Butcher tables
     void setFirstOrder();
@@ -40,7 +40,7 @@ class RungeKuttSolver : public ODUSolver {
     void setImplicit();
   private:
     void setOrder(size_t order);
-    Vector iterate(const Vector &y, numb_t step, size_t n);
+    Vector iterate(const Vector &y, numb_t step, size_t n) override;
     void calcStages(const Vector &y, numb_t step, numb_t t);
     Vector getStageVal(size_t stage) const { return stageValues[stage]; }
 };

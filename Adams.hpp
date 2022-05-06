@@ -11,11 +11,11 @@ class AdamsSolver : public ODUSolver {
     size_t order;
   public:
     AdamsSolver(FunctionMatrix *fvec_, size_t order);
-    virtual std::vector<Vector>
-      solve(const Vector &init, numb_t step, size_t iterations) override;
+    // virtual std::vector<Vector>
+    //   solve(const Vector &init, numb_t step, size_t iterations, size_t maxpoints=0) override;
     void setOrder(size_t order);
   private:
-    Vector iterate(const Vector &y, numb_t step, size_t n);
+    Vector iterate(const Vector &y, numb_t step, size_t n) override;
 };
 
 };
