@@ -7,19 +7,6 @@ AdamsSolver::AdamsSolver(FunctionMatrix *fvec_, size_t order_)
     setOrder(order_);
 }
 
-// std::vector<Vector>
-// AdamsSolver::solve(const Vector &init, numb_t step, size_t iterations,
-//                     size_t maxpoints/*=0*/) {
-//     Vector y = init;
-//     std::vector<Vector> solution;
-//     solution.push_back(y);
-//     for (size_t n = 0; n < iterations; n++) {
-//         y = iterate(y, step, n);
-//         solution.push_back(y);
-//     }
-//     return solution;
-// }
-
 Vector AdamsSolver::iterate(const Vector &y, numb_t step, size_t n) {
     Vector next_y = y;
     numb_t time = static_cast<numb_t>(n) * step;

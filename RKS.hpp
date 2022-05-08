@@ -1,6 +1,6 @@
 #pragma once
 #include "CoMa.hpp"
-#include "ODUSolver.hpp"
+#include "ODESolver.hpp"
 #include "FunctionMatrix.hpp"
 #include <vector>
 #include <memory>
@@ -22,7 +22,7 @@ class ButcherTable {
     void setZero();
 };
 
-class RungeKuttSolver : public ODUSolver {
+class RungeKuttSolver : public ODESolver {
     size_t order;
     std::unique_ptr<ButcherTable> table;
     FunctionMatrix *fvec;

@@ -1,8 +1,8 @@
-#include "ODUSolver.hpp"
+#include "ODESolver.hpp"
 
 namespace coma {
 
-std::vector<Vector> ODUSolver::solve(const Vector &init,
+std::vector<Vector> ODESolver::solve(const Vector &init,
                         numb_t step, size_t iterations, size_t maxpoints/*=0*/) {
     Vector y = init;
     Vector point(y.size() + 1);
